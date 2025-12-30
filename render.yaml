@@ -1,0 +1,32 @@
+# Render Blueprint for Stretto
+# Secrets are configured in the Render dashboard
+
+services:
+  # Web Service
+  - type: web
+    name: stretto-web
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: ENV
+        value: production
+
+      # Secrets - set these in Render Dashboard
+      - key: MONGO_URL
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: SPOTIFY_CLIENT_ID
+        sync: false
+      - key: SOUNDCLOUD_CLIENT_ID
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: YOUTUBE_REDIRECT_ENDPOINT
+        sync: false
+      - key: SOUNDCLOUD_REDIRECT_ENDPOINT
+        sync: false

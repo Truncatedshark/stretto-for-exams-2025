@@ -1,0 +1,49 @@
+# Git files
+.git
+.gitignore
+.github
+
+# Environment files - CRITICAL: Never include in Docker images
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Development files
+Dockerfile.local
+docker-compose.yml
+nodemon.json
+
+# Documentation
+README.md
+*.md
+
+# Test files
+test
+tests
+__tests__
+*.test.js
+*.spec.js
+
+# IDE and editor files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Temporary files
+tmp
+temp
