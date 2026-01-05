@@ -1,0 +1,1412 @@
+{
+	"info": {
+		"_postman_id": "stretto-blackbox-2024",
+		"name": "Stretto - Black Box Testing",
+		"description": "Comprehensive black box testing collection for POST /createaccount and POST /uploaddata endpoints.\n\nDemonstrates:\n- Equivalence Partitioning\n- Boundary Value Analysis\n- Decision Table Testing\n- State Transition Testing\n- Error Guessing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. POST /createaccount",
+			"item": [
+				{
+					"name": "Equivalence Partitioning",
+					"item": [
+						{
+							"name": "EP-01: Valid Email and Password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has success: true\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.success).to.eql(true);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Valid inputs - should succeed"
+							},
+							"response": []
+						},
+						{
+							"name": "EP-02: Invalid Email - No @ Symbol",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 403 or 400\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([403, 400]);",
+											"});",
+											"",
+											"pm.test(\"Response has success: false\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.success).to.eql(false);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"testexample.com\",\n  \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Invalid email format - no @ symbol"
+							},
+							"response": []
+						},
+						{
+							"name": "EP-03: Invalid Email - No Domain",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 403 or 400\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([403, 400]);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"test@\",\n  \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Invalid email - missing domain"
+							},
+							"response": []
+						},
+						{
+							"name": "EP-04: Empty Email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 403 or 400\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([403, 400]);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"\",\n  \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Empty email string"
+							},
+							"response": []
+						},
+						{
+							"name": "EP-05: Empty Password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 403 or 400\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([403, 400]);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Empty password string"
+							},
+							"response": []
+						},
+						{
+							"name": "EP-06: Special Characters in Email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has success: true\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.success).to.eql(true);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"test+tag@example.com\",\n  \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Valid email with + character"
+							},
+							"response": []
+						},
+						{
+							"name": "EP-07: Duplicate Email (Run After EP-01)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});",
+											"",
+											"pm.test(\"Response has error message about existing user\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.success).to.eql(false);",
+											"    pm.expect(jsonData.errorMessage).to.include('exists');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Attempt to create account with existing email"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Boundary Value Analysis",
+					"item": [
+						{
+							"name": "BV-01: Minimum Valid Email",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"a@b.c\",\n  \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Shortest possible valid email"
+							},
+							"response": []
+						},
+						{
+							"name": "BV-02: Very Long Email (254 chars)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd.com\",\n  \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Maximum length email per RFC 5321"
+							},
+							"response": []
+						},
+						{
+							"name": "BV-03: Password - 1 Character",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"bv03@example.com\",\n  \"password\": \"a\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Minimum boundary - 1 character password"
+							},
+							"response": []
+						},
+						{
+							"name": "BV-04: Password - 8 Characters",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"bv04@example.com\",\n  \"password\": \"password\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Common minimum password length"
+							},
+							"response": []
+						},
+						{
+							"name": "BV-05: Password - 1000 Characters",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"bv05@example.com\",\n  \"password\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Large password - 1000 characters"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Decision Table Testing",
+					"item": [
+						{
+							"name": "DT-01: Valid Email + Valid Password + New User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"dt01@example.com\",\n  \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Expected: Success"
+							},
+							"response": []
+						},
+						{
+							"name": "DT-02: Valid Email + Valid Password + Existing User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"dt01@example.com\",\n  \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Expected: Failure - User exists"
+							},
+							"response": []
+						},
+						{
+							"name": "DT-03: Valid Email + Empty Password",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"dt03@example.com\",\n  \"password\": \"\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Expected: Failure - Invalid password"
+							},
+							"response": []
+						},
+						{
+							"name": "DT-04: Invalid Email + Valid Password",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"notanemail\",\n  \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Expected: Failure - Invalid email"
+							},
+							"response": []
+						},
+						{
+							"name": "DT-05: Empty Email + Empty Password",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"\",\n  \"password\": \"\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Expected: Failure - Both invalid"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Error Guessing",
+					"item": [
+						{
+							"name": "EG-01: SQL Injection Attempt",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"admin'--@test.com\",\n  \"password\": \"' OR '1'='1\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Test SQL injection prevention"
+							},
+							"response": []
+						},
+						{
+							"name": "EG-02: NoSQL Injection Attempt",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": {\"$gt\": \"\"},\n  \"password\": {\"$gt\": \"\"}\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Test MongoDB injection prevention"
+							},
+							"response": []
+						},
+						{
+							"name": "EG-03: XSS Attack",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"<script>alert('xss')</script>@test.com\",\n  \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Test XSS prevention in email field"
+							},
+							"response": []
+						},
+						{
+							"name": "EG-04: Missing Fields",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Empty request body"
+							},
+							"response": []
+						},
+						{
+							"name": "EG-05: Type Confusion - Email as Number",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": 123456,\n  \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Test type validation - email as number"
+							},
+							"response": []
+						},
+						{
+							"name": "EG-06: Extra Fields (Privilege Escalation)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"eg06@example.com\",\n  \"password\": \"password123\",\n  \"admin\": true,\n  \"role\": \"superadmin\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Attempt to set admin privileges"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "2. POST /uploaddata",
+			"item": [
+				{
+					"name": "Setup - Login First",
+					"item": [
+						{
+							"name": "Create Test Account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Account created\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 403]);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"uploadtest@example.com\",\n  \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/createaccount",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"createaccount"
+									]
+								},
+								"description": "Create account for upload testing"
+							},
+							"response": []
+						},
+						{
+							"name": "Login to Get Session",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Login successful\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.success).to.eql(true);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"uploadtest@example.com\",\n  \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"login"
+									]
+								},
+								"description": "Login to obtain session cookie"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Equivalence Partitioning",
+					"item": [
+						{
+							"name": "EP-01: Valid Complete Data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has success and version\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.success).to.eql(true);",
+											"    pm.expect(jsonData.version).to.exist;",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"songs\": [\n    {\n      \"id\": \"y_abc123\",\n      \"title\": \"Test Song\",\n      \"artist\": \"Test Artist\",\n      \"album\": \"Test Album\",\n      \"cover\": \"https://example.com/cover.jpg\",\n      \"url\": \"https://youtube.com/watch?v=123\",\n      \"duration\": 180,\n      \"isYoutube\": true,\n      \"isSoundcloud\": false,\n      \"explicit\": false,\n      \"playInLibrary\": true,\n      \"createdAt\": 1234567890,\n      \"updatedAt\": 1234567890,\n      \"trackNumber\": 1,\n      \"totalTrackCount\": 10\n    }\n  ],\n  \"playlists\": [\n    {\n      \"title\": \"My Test Playlist\",\n      \"songs\": [\"y_abc123\"]\n    }\n  ]\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/uploaddata",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"uploaddata"
+									]
+								},
+								"description": "Valid data with all required fields"
+							},
+							"response": []
+						},
+						{
+							"name": "EP-02: Empty Arrays",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"songs\": [],\n  \"playlists\": []\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/uploaddata",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"uploaddata"
+									]
+								},
+								"description": "Empty library - valid"
+							},
+							"response": []
+						},
+						{
+							"name": "EP-03: Null Values",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"songs\": null,\n  \"playlists\": null\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/uploaddata",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"uploaddata"
+									]
+								},
+								"description": "Null arrays - should fail"
+							},
+							"response": []
+						},
+						{
+							"name": "EP-04: Only Songs, No Playlists",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"songs\": [\n    {\n      \"id\": \"y_test1\",\n      \"title\": \"Song Without Playlist\",\n      \"artist\": \"Artist\",\n      \"album\": \"Album\",\n      \"cover\": \"https://example.com/cover.jpg\",\n      \"url\": \"https://youtube.com/watch?v=123\",\n      \"duration\": 200,\n      \"isYoutube\": true,\n      \"isSoundcloud\": false,\n      \"explicit\": false,\n      \"playInLibrary\": true,\n      \"createdAt\": 1234567890,\n      \"updatedAt\": 1234567890\n    }\n  ],\n  \"playlists\": []\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/uploaddata",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"uploaddata"
+									]
+								},
+								"description": "Songs without playlists"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Boundary Value Analysis",
+					"item": [
+						{
+							"name": "BV-01: Empty Object (Minimum)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{}"
+								},
+								"url": {
+									"raw": "{{base_url}}/uploaddata",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"uploaddata"
+									]
+								},
+								"description": "Minimum possible payload - 2 bytes"
+							},
+							"response": []
+						},
+						{
+							"name": "BV-02: Single Song (Minimum Valid)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"songs\": [\n    {\n      \"id\": \"y_bv02\",\n      \"title\": \"A\",\n      \"artist\": \"B\",\n      \"album\": \"C\",\n      \"cover\": \"https://a.b/c.jpg\",\n      \"url\": \"https://youtube.com/v\",\n      \"duration\": 1,\n      \"isYoutube\": true,\n      \"isSoundcloud\": false,\n      \"explicit\": false,\n      \"playInLibrary\": true,\n      \"createdAt\": 0,\n      \"updatedAt\": 0\n    }\n  ],\n  \"playlists\": []\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/uploaddata",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"uploaddata"
+									]
+								},
+								"description": "Minimum valid song object"
+							},
+							"response": []
+						},
+						{
+							"name": "BV-03: 100 Songs (Medium)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"songs\": [\n    {{#repeat 100}}\n    {\n      \"id\": \"y_song{{@index}}\",\n      \"title\": \"Song {{@index}}\",\n      \"artist\": \"Artist {{@index}}\",\n      \"album\": \"Album\",\n      \"cover\": \"https://example.com/cover.jpg\",\n      \"url\": \"https://youtube.com/watch?v={{@index}}\",\n      \"duration\": 180,\n      \"isYoutube\": true,\n      \"isSoundcloud\": false,\n      \"explicit\": false,\n      \"playInLibrary\": true,\n      \"createdAt\": 1234567890,\n      \"updatedAt\": 1234567890\n    }{{#unless @last}},{{/unless}}\n    {{/repeat}}\n  ],\n  \"playlists\": []\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/uploaddata",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"uploaddata"
+									]
+								},
+								"description": "Medium size - 100 songs (approx 50KB)"
+							},
+							"response": []
+						},
+						{
+							"name": "BV-04: Very Long Title (Boundary)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"songs\": [\n    {\n      \"id\": \"y_bv04\",\n      \"title\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\n      \"artist\": \"Artist\",\n      \"album\": \"Album\",\n      \"cover\": \"https://example.com/cover.jpg\",\n      \"url\": \"https://youtube.com/watch?v=123\",\n      \"duration\": 180,\n      \"isYoutube\": true,\n      \"isSoundcloud\": false,\n      \"explicit\": false,\n      \"playInLibrary\": true,\n      \"createdAt\": 1234567890,\n      \"updatedAt\": 1234567890\n    }\n  ],\n  \"playlists\": []\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/uploaddata",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"uploaddata"
+									]
+								},
+								"description": "1000 character title - test string length limit"
+							},
+							"response": []
+						},
+						{
+							"name": "BV-05: Empty String Fields",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"songs\": [\n    {\n      \"id\": \"y_bv05\",\n      \"title\": \"\",\n      \"artist\": \"\",\n      \"album\": \"\",\n      \"cover\": \"\",\n      \"url\": \"\",\n      \"duration\": 0,\n      \"isYoutube\": true,\n      \"isSoundcloud\": false,\n      \"explicit\": false,\n      \"playInLibrary\": true,\n      \"createdAt\": 0,\n      \"updatedAt\": 0\n    }\n  ],\n  \"playlists\": []\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/uploaddata",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"uploaddata"
+									]
+								},
+								"description": "Empty strings for all text fields"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Decision Table Testing",
+					"item": [
+						{
+							"name": "DT-01: Valid + Authenticated + Small Size",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"songs\": [\n    {\n      \"id\": \"y_dt01\",\n      \"title\": \"Decision Table Test\",\n      \"artist\": \"Test\",\n      \"album\": \"Test\",\n      \"cover\": \"https://example.com/cover.jpg\",\n      \"url\": \"https://youtube.com/watch?v=123\",\n      \"duration\": 180,\n      \"isYoutube\": true,\n      \"isSoundcloud\": false,\n      \"explicit\": false,\n      \"playInLibrary\": true,\n      \"createdAt\": 1234567890,\n      \"updatedAt\": 1234567890\n    }\n  ],\n  \"playlists\": []\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/uploaddata",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"uploaddata"
+									]
+								},
+								"description": "Expected: Success"
+							},
+							"response": []
+						},
+						{
+							"name": "DT-02: Valid + Not Authenticated",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"songs\": [\n    {\n      \"id\": \"y_dt02\",\n      \"title\": \"Test\",\n      \"artist\": \"Test\",\n      \"album\": \"Test\",\n      \"cover\": \"https://example.com/cover.jpg\",\n      \"url\": \"https://youtube.com/watch?v=123\",\n      \"duration\": 180,\n      \"isYoutube\": true,\n      \"isSoundcloud\": false,\n      \"explicit\": false,\n      \"playInLibrary\": true,\n      \"createdAt\": 1234567890,\n      \"updatedAt\": 1234567890\n    }\n  ],\n  \"playlists\": []\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/uploaddata",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"uploaddata"
+									]
+								},
+								"description": "Expected: 403 - Please login (Run this in a new session/incognito)"
+							},
+							"response": []
+						},
+						{
+							"name": "DT-03: Invalid Types + Authenticated",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"songs\": \"not-an-array\",\n  \"playlists\": 12345\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/uploaddata",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"uploaddata"
+									]
+								},
+								"description": "Expected: Validation error"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Error Guessing",
+					"item": [
+						{
+							"name": "EG-01: NoSQL Injection in Songs",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"songs\": {\"$where\": \"this.password == 'password'\"},\n  \"playlists\": []\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/uploaddata",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"uploaddata"
+									]
+								},
+								"description": "Attempt MongoDB injection"
+							},
+							"response": []
+						},
+						{
+							"name": "EG-02: XSS in Song Title",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"songs\": [\n    {\n      \"id\": \"y_xss\",\n      \"title\": \"<script>alert('XSS')</script>\",\n      \"artist\": \"<img src=x onerror=alert('XSS')>\",\n      \"album\": \"Album\",\n      \"cover\": \"javascript:alert('XSS')\",\n      \"url\": \"https://youtube.com/watch?v=123\",\n      \"duration\": 180,\n      \"isYoutube\": true,\n      \"isSoundcloud\": false,\n      \"explicit\": false,\n      \"playInLibrary\": true,\n      \"createdAt\": 1234567890,\n      \"updatedAt\": 1234567890\n    }\n  ],\n  \"playlists\": []\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/uploaddata",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"uploaddata"
+									]
+								},
+								"description": "Test XSS prevention in string fields"
+							},
+							"response": []
+						},
+						{
+							"name": "EG-03: Negative Duration",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"songs\": [\n    {\n      \"id\": \"y_neg\",\n      \"title\": \"Negative Duration\",\n      \"artist\": \"Test\",\n      \"album\": \"Test\",\n      \"cover\": \"https://example.com/cover.jpg\",\n      \"url\": \"https://youtube.com/watch?v=123\",\n      \"duration\": -999,\n      \"isYoutube\": true,\n      \"isSoundcloud\": false,\n      \"explicit\": false,\n      \"playInLibrary\": true,\n      \"createdAt\": -1,\n      \"updatedAt\": -1\n    }\n  ],\n  \"playlists\": []\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/uploaddata",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"uploaddata"
+									]
+								},
+								"description": "Test negative number handling"
+							},
+							"response": []
+						},
+						{
+							"name": "EG-04: Boolean as String",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"songs\": [\n    {\n      \"id\": \"y_bool\",\n      \"title\": \"Boolean Test\",\n      \"artist\": \"Test\",\n      \"album\": \"Test\",\n      \"cover\": \"https://example.com/cover.jpg\",\n      \"url\": \"https://youtube.com/watch?v=123\",\n      \"duration\": 180,\n      \"isYoutube\": \"true\",\n      \"isSoundcloud\": \"false\",\n      \"explicit\": \"yes\",\n      \"playInLibrary\": \"1\",\n      \"createdAt\": 1234567890,\n      \"updatedAt\": 1234567890\n    }\n  ],\n  \"playlists\": []\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/uploaddata",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"uploaddata"
+									]
+								},
+								"description": "Test type coercion - booleans as strings"
+							},
+							"response": []
+						},
+						{
+							"name": "EG-05: Orphaned Playlist Reference",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"songs\": [\n    {\n      \"id\": \"y_exists\",\n      \"title\": \"Existing Song\",\n      \"artist\": \"Test\",\n      \"album\": \"Test\",\n      \"cover\": \"https://example.com/cover.jpg\",\n      \"url\": \"https://youtube.com/watch?v=123\",\n      \"duration\": 180,\n      \"isYoutube\": true,\n      \"isSoundcloud\": false,\n      \"explicit\": false,\n      \"playInLibrary\": true,\n      \"createdAt\": 1234567890,\n      \"updatedAt\": 1234567890\n    }\n  ],\n  \"playlists\": [\n    {\n      \"title\": \"Broken Playlist\",\n      \"songs\": [\"y_exists\", \"y_nonexistent_song_id\"]\n    }\n  ]\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/uploaddata",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"uploaddata"
+									]
+								},
+								"description": "Playlist references non-existent song ID"
+							},
+							"response": []
+						},
+						{
+							"name": "EG-06: Duplicate Song IDs",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"songs\": [\n    {\n      \"id\": \"y_duplicate\",\n      \"title\": \"Song 1\",\n      \"artist\": \"Artist\",\n      \"album\": \"Album\",\n      \"cover\": \"https://example.com/cover.jpg\",\n      \"url\": \"https://youtube.com/watch?v=123\",\n      \"duration\": 180,\n      \"isYoutube\": true,\n      \"isSoundcloud\": false,\n      \"explicit\": false,\n      \"playInLibrary\": true,\n      \"createdAt\": 1234567890,\n      \"updatedAt\": 1234567890\n    },\n    {\n      \"id\": \"y_duplicate\",\n      \"title\": \"Song 2 - Same ID\",\n      \"artist\": \"Artist\",\n      \"album\": \"Album\",\n      \"cover\": \"https://example.com/cover.jpg\",\n      \"url\": \"https://youtube.com/watch?v=456\",\n      \"duration\": 200,\n      \"isYoutube\": true,\n      \"isSoundcloud\": false,\n      \"explicit\": false,\n      \"playInLibrary\": true,\n      \"createdAt\": 1234567891,\n      \"updatedAt\": 1234567891\n    }\n  ],\n  \"playlists\": []\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/uploaddata",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"uploaddata"
+									]
+								},
+								"description": "Test duplicate ID handling"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}
